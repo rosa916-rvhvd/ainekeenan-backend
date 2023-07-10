@@ -1,0 +1,67 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ainekeenan-poi-backend-app-dev
+  annotations:
+    argocd/app-name: ainekeenan-poi-backend-app-dev
+    backstage.io/kubernetes-id: ainekeenan-poi-backend-app-dev
+    backstage.io/kubernetes-namespace: ainekeenan
+    backstage.io/kubernetes-label-selector: 'app.kubernetes.io/instance=ainekeenan-poi-backend-app-dev'
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: rosa916-rvhvd/ainekeenan-backend
+    janus-idp.io/tekton-enabled: 'true'
+  tags:
+    - java
+    - quarkus
+    - maven
+    - workshop
+  links:
+    - url: https://console-openshift-console.apps.rosa916.9nln.p1.openshiftapps.com/dev-pipelines/ns/ainekeenan/
+      title: Pipelines
+      icon: web
+    - url: https://console-openshift-console.apps.rosa916.9nln.p1.openshiftapps.com/k8s/ns/ainekeenan/deployments/ainekeenan-poi-backend-app
+      title: Deployment
+      icon: web
+    - url: https://devspaces.apps.rosa916.9nln.p1.openshiftapps.com/#https://github.com/rosa916-rvhvd/ainekeenan-backend?che-editor=che-incubator/che-code/latest&devfilePath=.devfile-vscode.yaml
+      title: OpenShift Dev Spaces (VS Code)
+      icon: web
+spec:
+  type: service
+  lifecycle: production
+  owner: "user:default/ainekeenan"
+  system: workshop-system-ainekeenan
+  providesApis:
+    - backend-api-ainekeenan
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: workshop-system-ainekeenan
+  tags:
+    - backstage
+    - janus-idp
+    - openshift
+    - workshop
+    - rh-summit
+spec:
+  owner: "user:default/ainekeenan"
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: backend-api-ainekeenan
+  description: API surface used by workshop attendees to initialize and load parks data
+  links:
+    - url: http://ainekeenan-poi-backend-app-ainekeenan.apps.rosa916.9nln.p1.openshiftapps.com/q/swagger-ui
+      title: Swagger UI
+      icon: web
+    - url: https://github.com/rosa916-rvhvd/ainekeenan-backend/tree/main/src/main/resources/META-INF/openapi.yaml
+      title: API Spec
+      icon: code
+spec:
+  type: openapi
+  lifecycle: production
+  owner: "user:default/ainekeenan"
+  system: workshop-system-ainekeenan
+  definition:
+    $text: https://github.com/rosa916-rvhvd/ainekeenan-backend/tree/main/src/main/resources/META-INF/openapi.yaml
